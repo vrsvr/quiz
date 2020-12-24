@@ -58,3 +58,11 @@ body {
 .btn-restart--visible {
   display: block;
 }
+
+.answer--invalid {
+  color: red;
+}
+
+.answer--valid {
+  color: green;
+}

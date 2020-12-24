@@ -1,33 +1,57 @@
 const DATA = [{
-    questions: 'Вопрос 1',
+    questions: 'В каком году вышел фильм "Бойцовский клуб"',
     answers: [{
         id: '1',
-        value: 'Ответ 1',
+        value: '1999',
         correct: true,
       },
       {
         id: '2',
-        value: 'Ответ 2',
+        value: '1995',
         correct: false,
       },
       {
         id: '3',
-        value: 'Ответ 3',
+        value: '2001',
         correct: false,
       },
     ]
   },
   {
-    questions: 'Вопрос 2',
+    questions: 'По роману какого писателя был снят фильм?',
     answers: [{
         id: '4',
-        value: 'Ответ 4',
+        value: 'Ирвин Уэлш',
         correct: false,
       },
       {
         id: '5',
-        value: 'Ответ 5',
+        value: 'Чак Паланик',
         correct: true,
+      },
+      {
+        id: '6',
+        value: 'Чарльз Буковски',
+        correct: false,
+      },
+    ]
+  },
+  {
+    questions: 'Какое первое правило бойцовского клуба?',
+    answers: [{
+        id: '7',
+        value: 'Никому не рассказывать о Бойцовском клубе',
+        correct: true,
+      },
+      {
+        id: '8',
+        value: 'Никогда никому не рассказывать о Бойцовском клубе',
+        correct: false,
+      },
+      {
+        id: '9',
+        value: 'В схватке участвуют только двое',
+        correct: false,
       },
     ]
   },
@@ -44,7 +68,9 @@ const btnRestart = document.getElementById('btn-restart');
 
 const renderQuestions = (index) => {
   renderIndicator(index + 1);
+
   questions.dataset.currentStep = index;
+
   const renderAnswers = () => DATA[index].answers
     .map((answer) => `
       <li>
@@ -66,8 +92,19 @@ const renderQuestions = (index) => {
 
 const renderResults = () => {
   let content = '';
+
+  const getClassName = (answer, questionIndex) => {
+    let classname = '';
+
+    if (!answer.correct && answer.id === localResults[questionIndex]) {
+      classname = 'answer--invalid';
+    } else if (answer.correct) {
+      classname = 'answer--valid'
+    }
+    return classname;
+  };
   const getAnswers = (questionIndex) => DATA[questionIndex].answers
-    .map((answer) => `<li>${answer.value}</li>`)
+    .map((answer) => `<li class=${getClassName(answer, questionIndex)}>${answer.value}</li>`)
     .join('');
 
   DATA.forEach((question, index) => {
@@ -78,6 +115,7 @@ const renderResults = () => {
     </div>
     `;
   });
+
   results.innerHTML = content;
 };
 
@@ -95,6 +133,7 @@ quiz.addEventListener('change', (event) => {
 quiz.addEventListener('click', (event) => {
   if (event.target.classList.contains('btn-next')) {
     const nextQuestionIndex = Number(questions.dataset.currentStep) + 1;
+
     if (DATA.length === nextQuestionIndex) {
       questions.classList.add('question--hidden');
       indicator.classList.add('indicator--hidden');
@@ -105,10 +144,20 @@ quiz.addEventListener('click', (event) => {
     } else {
       renderQuestions(nextQuestionIndex);
     }
+
     btnNext.disabled = true;
   };
   if (event.target.classList.contains('btn-restart')) {
-    console.log('С начала');
+    localResults = {};
+    results.innerHTML = '';
+
+    questions.classList.remove('question--hidden');
+    indicator.classList.remove('indicator--hidden');
+    results.classList.remove('results--visible');
+    btnNext.classList.remove('btn-next--hidden');
+    btnRestart.classList.remove('btn-restart--visible');
+
+    renderQuestions(0);
   };
 });
 
