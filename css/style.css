@@ -14,8 +14,6 @@ body {
   margin-bottom: 20px;
 }
 
-.quiz-questions-item {}
-
 .quiz-questions-item__question {
   font-size: 20px;
   margin-bottom: 20px;
@@ -31,6 +29,10 @@ body {
   display: none;
 }
 
+.quiz-results-item {
+  margin-bottom: 20px;
+}
+
 .quiz-results-item__question {
   font-size: 20px;
   margin-bottom: 20px;
@@ -42,10 +44,17 @@ body {
   list-style: none;
 }
 
-.quiz-controls {}
-
-.btn-next {}
-
 .btn-restart {
   display: none;
+}
+
+.question--hidden,
+.indicator--hidden,
+.btn-next--hidden {
+  display: none;
+}
+
+.results--visible,
+.btn-restart--visible {
+  display: block;
 }
